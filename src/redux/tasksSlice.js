@@ -1,41 +1,49 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const loadFromLocalStorage = () => {
-  const savedTasks = localStorage.getItem('tasks');
-  return savedTasks ? JSON.parse(savedTasks) : [];
-};
-
-const saveToLocalStorage = (tasks) => {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-};
+export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
+  const response = await axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10");
+  return response.data;
+});
 
 const tasksSlice = createSlice({
-  name: 'tasks',
-  initialState: loadFromLocalStorage(),
+  name: "tasks",
+  initialState: {
+    tasks: JSON.parse(localStorage.getItem("tasks")) || [],
+    loading: false,
+  },
   reducers: {
-    setTasks: (state, action) => {
-      saveToLocalStorage(action.payload);
-      return action.payload;
-    },
     addTask: (state, action) => {
-      const updatedTasks = [...state, action.payload];
-      saveToLocalStorage(updatedTasks);
-      return updatedTasks;
-    },
-    updateTask: (state, action) => {
-      const updatedTasks = state.map((task) =>
-        task.id === action.payload.id ? action.payload : task
-      );
-      saveToLocalStorage(updatedTasks);
-      return updatedTasks;
+      state.tasks.push(action.payload);
+      localStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
     deleteTask: (state, action) => {
-      const updatedTasks = state.filter((task) => task.id !== action.payload);
-      saveToLocalStorage(updatedTasks);
-      return updatedTasks;
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+      localStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
+    toggleTask: (state, action) => {
+      const task = state.tasks.find((task) => task.id === action.payload);
+      if (task) {
+        task.completed = !task.completed;
+        localStorage.setItem("tasks", JSON.stringify(state.tasks));
+      }
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTasks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.tasks = action.payload;
+        state.loading = false;
+        localStorage.setItem("tasks", JSON.stringify(action.payload));
+      })
+      .addCase(fetchTasks.rejected, (state) => {
+        state.loading = false;
+      });
   },
 });
 
-export const { setTasks, addTask, updateTask, deleteTask } = tasksSlice.actions;
+export const { addTask, deleteTask, toggleTask } = tasksSlice.actions;
 export default tasksSlice.reducer;

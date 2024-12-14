@@ -56,3 +56,70 @@ button:hover {
     margin-top: 10px;
 }
   
+
+.tasks-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+  
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  
+.todo-item.completed span {
+    text-decoration: line-through;
+    color: gray;
+}
+  
+.loader {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+}
+
+
+.tasks-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+  
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  
+.todo-item.completed span {
+    text-decoration: line-through;
+    color: gray;
+}
+  
+.loader {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+}
+  
+footer {
+    background-color: #f5f5f5;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+  
