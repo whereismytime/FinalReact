@@ -1,14 +1,13 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateTask } from '../redux/tasksSlice';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { editTask } from "../redux/tasksSlice";
 
-function EditTaskModal({ task, onClose }) {
+const EditTaskModal = ({ task, onClose }) => {
   const [title, setTitle] = useState(task.title);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    const updatedTask = { ...task, title };
-    dispatch(updateTask(updatedTask));
+    dispatch(editTask({ id: task.id, title }));
     onClose();
   };
 
@@ -24,6 +23,6 @@ function EditTaskModal({ task, onClose }) {
       <button onClick={onClose}>Cancel</button>
     </div>
   );
-}
+};
 
 export default EditTaskModal;

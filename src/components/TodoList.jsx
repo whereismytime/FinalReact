@@ -1,4 +1,3 @@
-
 import TodoItem from "./TodoItem";
 
 const TodoList = ({ tasks }) => {
@@ -12,5 +11,3 @@ const TodoList = ({ tasks }) => {
 };
 
 export default TodoList;
-
-
